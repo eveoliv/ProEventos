@@ -1,8 +1,9 @@
 ﻿using System;
 using System.Linq;
+using ProEventos.Api.Data;
+using ProEventos.Api.Models;
 using Microsoft.AspNetCore.Mvc;
 using System.Collections.Generic;
-using ProEventos.Api.Models;
 
 namespace ProEventos.Api.Controllers
 {
@@ -11,45 +12,27 @@ namespace ProEventos.Api.Controllers
     public class EventoController : ControllerBase
     {
 
-        public IEnumerable<Evento> lista = new Evento[]{
-            new Evento{
-                    EventoId = 1,
-                    Tema = "Dotnet e Angular",
-                    Local = "São Paulo",
-                    Lote="1º Lote",
-                    QtdPessoas = 20,
-                    DataEvento = DateTime.Now.AddDays(3).ToString("dd/MM/yyyy"),
-                    ImagemURL = "Foto.jpg"
-                    },
-            new Evento{
-                    EventoId = 2,
-                    Tema = "Dotnet e Angular 2",
-                    Local = "São Paulo",
-                    Lote="2º Lote",
-                    QtdPessoas = 20,
-                    DataEvento = DateTime.Now.AddDays(6).ToString("dd/MM/yyyy"),
-                    ImagemURL = "Foto.jpg"
-                    }            
-        };    
+      private readonly DataContext _context;
 
-        public EventoController()
-        {            
+        public EventoController(DataContext context)
+        {
+            _context = context;
         }
 
         [HttpGet]
         public IEnumerable<Evento> Get()
         {
-            return lista;
+            return _context.Eventos;
         }
 
         [HttpGet("{id}")]
-        public IEnumerable<Evento> Get(int id)
+        public Evento Get(int id)
         {
-            return lista.Where(e => e.EventoId == id);
+            return _context.Eventos.FirstOrDefault(e => e.EventoId == id);
         }
 
         [HttpPost]
-        public string Post()
+        public string Post(Evento e)
         {
             return "Exemplo de Post";
         }
