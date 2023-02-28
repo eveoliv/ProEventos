@@ -1,9 +1,55 @@
-<h1>Eventos Component</h1>
+<h2>Eventos</h2>
+<hr>
 
-
-<div *ngFor="let evento of eventos">
-  <p><b>Tema:</b> {{evento.tema}}</p>
-  <p><b>Local:</b> {{evento.local}}</p>
+<div action="" class="form-inline">
+  <div class="form group mb2">
+    <label class="mr-2">Filtro: &nbsp;
+      <input type="text" class="form-control mr-2" placeholder="buscar" [(ngModel)]="filtroLista">
+    </label>
+  </div>
 </div>
-<br />
+
+<br>
+<table class="table table-striped">
+  <thead class="thead-dark">
+    <tr>
+      <th>
+        <button type="button" class="btn btn-outline-light btn-sm"
+        (click)="alterarImagem()"
+        >{{ !exibirImagem ? 'Exibir' : 'Ocultar'}}</button>
+      </th>
+      <th>Id</th>
+      <th>Tema</th>
+      <th>Local</th>
+      <th>Data</th>
+      <th>Quandidade Pessoas</th>
+      <th>Lote</th>
+      <th>Opões</th>
+    </tr>
+  </thead>
+  <tbody *ngIf="eventos && eventos.length">
+    <tr *ngFor="let evento of eventosFiltrados">
+      <td>
+        <img [collapse]="!exibirImagem" [isAnimated]="true" src="/assets/{{evento.imagemURL}}" [style.width.px]="150" [style.margim.px]="2">
+      </td>
+      <td>{{evento.eventoId}}</td>
+      <td>{{evento.tema}}</td>
+      <td>{{evento.local}}</td>
+      <td>{{evento.dataEvento}}</td>
+      <td>{{evento.qtdPessoas}}</td>
+      <td>{{evento.lote}}</td>
+      <td>
+        <button type="button" class="btn btn-primary btn-sm mr-2">Editar</button>
+        <button type="button" class="btn btn-danger btn-sm">Excluir</button>
+      </td>
+    </tr>
+  </tbody>
+  <tfoot *ngIf="!eventosFiltrados.length">
+    <tr>
+      <td colspan="8" class="container">
+        <h4>Nenhum evento encontrado</h4>
+      </td>
+    </tr>
+  </tfoot>
+</table>
 
