@@ -1,4 +1,5 @@
 using ProEventos.Domain;
+using Microsoft.EntityFrameworkCore;
 
 namespace ProEventos.Persistence
 {
@@ -36,19 +37,40 @@ namespace ProEventos.Persistence
             return (await context.SaveChangesAsync()) > 0;
         }
 
-        public Task<Evento[]> GetAllEventosByTemaAsync(string tema, bool includePalestrantes)
+        public async Task<Evento[]> GetAllEventosAsync(bool includePalestrantes = false)
         {
-            throw new NotImplementedException();
+            IQueryable<Evento> query = context.Eventos.Include(e => e.Lotes).Include(r => r.RedesSociais);
+
+            if (includePalestrantes)        
+                query = query.Include(e => e.PalestrantesEventos).ThenInclude(p => p.Palestrante);            
+            
+            query = query.OrderBy(i => i.Id);
+
+            return await query.ToArrayAsync();
         }
 
-        public Task<Evento[]> GetAllEventosAsync(bool includePalestrantes)
+        public async Task<Evento[]> GetAllEventosByTemaAsync(string tema, bool includePalestrantes = false)
         {
-            throw new NotImplementedException();
+            IQueryable<Evento> query = context.Eventos.Include(e => e.Lotes).Include(r => r.RedesSociais);
+
+            if (includePalestrantes)        
+                query = query.Include(e => e.PalestrantesEventos).ThenInclude(p => p.Palestrante);            
+            
+            query = query.OrderBy(i => i.Id).Where(e => e.Tema.ToLower().Contains(tema.ToLower()));
+
+            return await query.ToArrayAsync();
         }
 
-        public Task<Evento> GetEventoByIdAsync(int eventoId, bool includePalestrantes)
+        public async Task<Evento> GetEventoByIdAsync(int eventoId, bool includePalestrantes = false)
         {
-            throw new NotImplementedException();
+               IQueryable<Evento> query = context.Eventos.Include(e => e.Lotes).Include(r => r.RedesSociais);
+
+            if (includePalestrantes)        
+                query = query.Include(e => e.PalestrantesEventos).ThenInclude(p => p.Palestrante);            
+            
+            query = query.OrderBy(i => i.Id).Where(e => e.Id == eventoId);
+
+            return await query.FirstOrDefaultAsync();
         }
 
         public Task<Palestrante[]> GetAllPalestrantesAsync(bool includeEventos)
