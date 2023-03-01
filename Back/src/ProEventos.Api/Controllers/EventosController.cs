@@ -1,10 +1,8 @@
-﻿using System;
-using System.Linq;
-using ProEventos.Api.Data;
-using ProEventos.Api.Models;
+﻿using System.Linq;
+using ProEventos.Domain;
+using ProEventos.Persistence;
 using Microsoft.AspNetCore.Mvc;
 using System.Collections.Generic;
-using System.Threading.Tasks;
 
 namespace ProEventos.Api.Controllers
 {
@@ -13,9 +11,9 @@ namespace ProEventos.Api.Controllers
     public class EventosController : ControllerBase
     {
 
-      private readonly DataContext _context;
+      private readonly ProEventosContext _context;
 
-        public EventosController(DataContext context)
+        public EventosController(ProEventosContext context)
         {
             _context = context;
         }
@@ -29,7 +27,7 @@ namespace ProEventos.Api.Controllers
         [HttpGet("{id}")]
         public Evento Get(int id)
         {
-            return _context.Eventos.FirstOrDefault(e => e.EventoId == id);
+            return _context.Eventos.FirstOrDefault(e => e.Id == id);
         }
 
         [HttpPost]
@@ -39,8 +37,7 @@ namespace ProEventos.Api.Controllers
                Local = e.Local,
                DataEvento = e.DataEvento,
                Tema = e.Tema,
-               QtdPessoas = e.QtdPessoas,
-               Lote = e.Lote,
+               QtdPessoas = e.QtdPessoas,        
                ImagemURL = e.ImagemURL    
             };
 
