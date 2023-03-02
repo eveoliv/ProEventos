@@ -1,7 +1,7 @@
 using ProEventos.Domain;
 using Microsoft.EntityFrameworkCore;
 
-namespace ProEventos.Persistence
+namespace ProEventos.Persistence.Contextos
 {
     public class ProEventosContext : DbContext
     {
@@ -16,6 +16,11 @@ namespace ProEventos.Persistence
         protected override void OnModelCreating(ModelBuilder builder)
         {
             builder.Entity<PalestranteEvento>().HasKey(p => new{p.EventoId, p.PalestranteId});
+
+            builder.Entity<Evento>().HasMany(r => r.RedesSociais).WithOne(e => e.Evento).OnDelete(DeleteBehavior.Cascade);
+            
+            builder.Entity<Palestrante>().HasMany(r => r.RedesSociais).WithOne(e => e.Palestrante).OnDelete(DeleteBehavior.Cascade);
+
         }
     }
 }
