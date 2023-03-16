@@ -26,6 +26,9 @@ import { BsDropdownModule } from 'ngx-bootstrap/dropdown';
 import { DateTimeFormatPipe } from './helpers/DateTimeFormat.pipe';
 import { EventoDetalheComponent } from './componentes/eventos/evento-detalhe/evento-detalhe.component';
 import { EventoListaComponent } from './componentes/eventos/evento-lista/evento-lista.component';
+import { UserComponent } from './componentes/user/user.component';
+import { LoginComponent } from './componentes/user/login/login.component';
+import { RegistrationComponent } from './componentes/user/registration/registration.component';
 
 
 @NgModule({
@@ -40,7 +43,10 @@ import { EventoListaComponent } from './componentes/eventos/evento-lista/evento-
     TituloComponent,
     DateTimeFormatPipe,
     EventoDetalheComponent,
-    EventoListaComponent
+    EventoListaComponent,
+    UserComponent,
+    LoginComponent,
+    RegistrationComponent
    ],
   imports: [
     BrowserModule,
